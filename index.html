@@ -3,280 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Digital Business Card | RHR Smart Way</title>
+    <title>RHR Digital Business Card</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; }
-        .glass-card { transition: all 0.4s ease; border-radius: 2.5rem; }
+        body { font-family: 'Inter', sans-serif; transition: all 0.5s ease; }
         
-        /* Themes */
-        .theme-classic { background: #ffffff; border-radius: 2.5rem; }
-        .theme-border { background: #ffffff; border: 2px solid #e2e8f0; }
-        .theme-glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
-        .theme-minimal { background: #ffffff; border-radius: 1rem; box-shadow: none; border: 1px solid #f1f5f9; }
-        .theme-bold { background: #ffffff; border-top: 10px solid; }
+        /* Base Card Styling */
+        .glass-card { transition: all 0.4s ease; min-height: 550px; position: relative; }
+        .profile-img { object-fit: cover; transition: all 0.3s; }
 
-        .profile-img { width: 110px; height: 110px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .icon-box { min-width: 48px; min-height: 48px; flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; border: 1px solid #f1f5f9; transition: all 0.3s; }
-        .social-text-link { flex: 1; padding: 1rem; text-align: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; color: #334155; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; }
-        
-        .active-theme { border: 2px solid #2563eb !important; background: #eff6ff !important; color: #2563eb !important; }
-        #header-bg, #save-btn-view, body { transition: background-color 0.3s; }
-        
-        /* UI Preview Grid Styles */
-        .ui-grid-btn { padding: 8px; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; text-align: center; font-size: 10px; font-weight: 800; transition: all 0.2s; }
-        .ui-grid-btn:hover { background: #f1f5f9; }
+        /* --- UI DESIGNS FROM YOUR IMAGES --- */
+
+        /* UI-1: Classic Professional (Francisco Andrade) */
+        .ui-design-1 { background: #ffffff; border-radius: 2rem; overflow: hidden; }
+        .ui-design-1 #header-bg { background: #1e293b; height: 120px; clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%); }
+        .ui-design-1 #view-photo { border: 4px solid #ffffff; width: 120px; height: 120px; margin-top: -60px; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+
+        /* UI-2: Modern Blue (Donna Stroupe) */
+        .ui-design-2 { background: #f8fafc; border-radius: 1.5rem; text-align: left !important; }
+        .ui-design-2 #header-bg { background: linear-gradient(135deg, #1e3a8a 70%, #0ea5e9 100%); height: 180px; }
+        .ui-design-2 #view-photo { width: 130px; height: 130px; border-radius: 1rem; margin: -100px 0 20px 20px; border: 5px solid #fff; }
+        .ui-design-2 #view-name { text-align: left; padding-left: 20px; color: #1e3a8a; }
+
+        /* UI-3: Elegant Dark (Juliana Silva) */
+        .ui-design-3 { background: #111827; color: white; border-radius: 2.5rem; }
+        .ui-design-3 #header-bg { background: #083344; height: 100px; border-radius: 0 0 50% 50%; }
+        .ui-design-3 #view-photo { border: 4px solid #22d3ee; width: 130px; height: 130px; border-radius: 50%; }
+        .ui-design-3 .icon-box { background: #1f2937; color: #22d3ee; }
+
+        /* UI-4: Vibrant Gradient (Olivia Wilson) */
+        .ui-design-4 { background: linear-gradient(to bottom, #d946ef, #fb923c); color: white; }
+        .ui-design-4 #view-photo { border: 6px solid rgba(255,255,255,0.4); width: 140px; height: 140px; }
+
+        /* UI-5: Corporate Grey (Olivia Wilson - Manager) */
+        .ui-design-5 { background: #ffffff; border-radius: 0; border-left: 15px solid #334155; }
+        .ui-design-5 #header-bg { background: #f1f5f9; height: 80px; }
+        .ui-design-5 #view-photo { border-radius: 0; width: 120px; height: 120px; border: 2px solid #334155; }
+
+        /* UI-6: Bold Red/Black (Mariana Anderson) */
+        .ui-design-6 { background: #ffffff; border-radius: 2rem; overflow: hidden; }
+        .ui-design-6 #header-bg { background: #1f2937; height: 200px; clip-path: ellipse(100% 100% at 50% 0%); }
+        .ui-design-6 #view-photo { border: 5px solid #ef4444; margin-top: -100px; }
+        .ui-design-6 #save-btn-view { background: #ef4444; }
+
+        /* UI-7: Orange Minimal (Olivia Wilson - Marketing) */
+        .ui-design-7 { background: #1f2937; color: white; }
+        .ui-design-7 #header-bg { background: #f97316; height: 150px; border-radius: 0 0 100px 0; }
+        .ui-design-7 #view-photo { border-radius: 50%; border: 5px solid #1f2937; margin-top: -75px; }
+
+        /* UI-8: Dynamic Diagonal (Olivia Wilson - Manager) */
+        .ui-design-8 { background: #2563eb; color: white; clip-path: inset(0 round 2rem); }
+        .ui-design-8 #header-bg { background: #ffffff; height: 120px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%); }
+        .ui-design-8 #view-photo { margin-top: -60px; border: 5px solid #2563eb; }
+
+        /* UI-9: Real Estate Style (Olivia Wilson) */
+        .ui-design-9 { background: #ffffff; border-radius: 1rem; }
+        .ui-design-9 #header-bg { background: #f43f5e; height: 140px; clip-path: circle(70% at 50% 0%); }
+        .ui-design-9 #view-photo { border-radius: 0.5rem; margin-top: -70px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
+
+        /* UI-10: Luxury Gold (Daniel Gallego) */
+        .ui-design-10 { background: #000000; color: #fbbf24; border: 2px solid #fbbf24; }
+        .ui-design-10 #view-photo { border: 3px solid #fbbf24; padding: 5px; }
+        .ui-design-10 .social-text-link { background: #fbbf24; color: black; }
+
+        /* Utility */
+        .hidden { display: none; }
+        .icon-box { min-width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: #f1f5f9; color: #475569; }
+        .social-text-link { flex: 1; padding: 12px; text-align: center; border-radius: 12px; background: #f1f5f9; font-weight: 700; font-size: 13px; }
     </style>
 </head>
-<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#0100f0]">
-    
-    <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400 hover:text-blue-600 transition-colors">
-        <i data-lucide="settings" class="w-5 h-5"></i>
-    </button>
+<body id="body-bg" class="bg-slate-900 min-h-screen flex items-center justify-center p-4">
 
-    <div id="main-loader" class="text-white font-medium animate-pulse italic">Connecting with RHR Cloud...</div>
-    
-    <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
-        <div id="header-bg" class="h-28 bg-[#1e293b]"></div> 
-        <div class="px-6 pb-8 -mt-14 text-center">
-            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-3 bg-slate-100">
-            <h1 id="view-name" class="text-xl font-bold tracking-tight text-slate-800"></h1>
-            <p id="view-title" class="text-blue-600 font-bold text-[10px] uppercase tracking-widest italic"></p>
-            <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-4 uppercase tracking-wider"></p>
-            <div class="mb-6 px-2"><p id="view-bio" class="text-slate-500 text-xs leading-relaxed italic"></p></div>
+    <div id="main-loader" class="text-white animate-pulse font-bold">RHR SYSTEM LOADING...</div>
 
-            <button id="save-btn-view" onclick="saveVCF()" class="w-full bg-[#1e293b] text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg hover:opacity-90 transition-all">
-                <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
+    <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl hidden">
+        <div id="header-bg"></div>
+        
+        <div class="px-6 pb-8 text-center">
+            <img id="view-photo" src="" alt="Profile" class="profile-img mx-auto mb-4 shadow-xl">
+            
+            <h1 id="view-name" class="text-2xl font-800 tracking-tight mb-1"></h1>
+            <p id="view-title" class="text-sm font-bold uppercase tracking-widest mb-1 opacity-80"></p>
+            <p id="view-company" class="text-xs font-medium mb-4 opacity-60"></p>
+            
+            <p id="view-bio" class="text-xs italic mb-6 px-4 opacity-80"></p>
+
+            <button id="save-btn-view" onclick="saveVCF()" class="w-full py-4 rounded-xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg bg-slate-800 text-white">
+                <i data-lucide="user-plus"></i> SAVE CONTACT
             </button>
 
-            <div class="flex justify-center gap-2 mb-3">
+            <div class="flex justify-center gap-3 mb-4">
                 <a id="link-mobile" href="#" class="icon-box"><i data-lucide="phone" class="w-5 h-5"></i></a>
                 <a id="link-email" href="#" class="icon-box"><i data-lucide="mail" class="w-5 h-5"></i></a>
                 <a id="link-website" href="#" target="_blank" class="icon-box"><i data-lucide="globe" class="w-5 h-5"></i></a>
             </div>
 
-            <div class="flex justify-center gap-2 mb-8">
-                <a id="link-facebook" href="#" target="_blank" class="social-text-link">Facebook</a>
-                <a id="link-linkedin" href="#" target="_blank" class="social-text-link">LinkedIn</a>
+            <div class="flex gap-2 mb-8">
+                <a id="link-facebook" href="#" target="_blank" class="social-text-link">FACEBOOK</a>
+                <a id="link-linkedin" href="#" target="_blank" class="social-text-link">LINKEDIN</a>
             </div>
 
             <div class="space-y-3 text-left">
-                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 mt-1"></i>
-                    <div><p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Office Address</p><p id="view-address" class="text-sm text-slate-700 font-semibold"></p></div>
+                <div class="p-4 bg-black/5 rounded-xl flex gap-4">
+                    <i data-lucide="map-pin" class="w-5 h-5 opacity-50"></i>
+                    <div>
+                        <span class="text-[10px] font-bold uppercase opacity-50">Address</span>
+                        <p id="view-address" class="text-sm font-semibold"></p>
+                    </div>
                 </div>
-                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
-                    <i data-lucide="briefcase" class="w-5 h-5 text-slate-400 mt-1"></i>
-                    <div><p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Services</p><p id="view-services" class="text-sm text-slate-700 font-semibold"></p></div>
+                <div class="p-4 bg-black/5 rounded-xl flex gap-4">
+                    <i data-lucide="briefcase" class="w-5 h-5 opacity-50"></i>
+                    <div>
+                        <span class="text-[10px] font-bold uppercase opacity-50">Services</span>
+                        <p id="view-services" class="text-sm font-semibold"></p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center p-6 z-[100]">
-        <div class="bg-white rounded-3xl p-8 max-w-xs w-full text-center shadow-2xl">
-            <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Access</h3>
-            <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 mb-8 focus:outline-none" maxlength="4" placeholder="••••">
-            <div class="flex gap-3">
-                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Cancel</button>
-                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg">Login</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="edit-modal" class="fixed inset-0 bg-white hidden overflow-y-auto p-6 z-[200]">
-        <div class="max-w-md mx-auto pb-20">
-            <div class="flex justify-between items-center mb-10 border-b pb-4">
-                <h2 class="text-xl font-bold text-slate-800">Card Settings</h2>
-                <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4 text-center">User Interface Design (1-10)</p>
-            <div id="ui-selector" class="grid grid-cols-5 gap-2 mb-8 border-b pb-8">
-                </div>
-
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Choose Style Theme</p>
-            <div class="grid grid-cols-3 gap-2 mb-8 border-b pb-8">
-                <div onclick="setTheme('theme-classic')" id="btn-theme-classic" class="ui-grid-btn bg-slate-50">Classic</div>
-                <div onclick="setTheme('theme-border')" id="btn-theme-border" class="ui-grid-btn bg-slate-50">Modern</div>
-                <div onclick="setTheme('theme-glass')" id="btn-theme-glass" class="ui-grid-btn bg-slate-50">Glass</div>
-            </div>
-
-            <div id="edit-form-fields" class="space-y-5 mb-8"></div>
-            
-            <div class="p-5 bg-slate-50 rounded-2xl space-y-4 mb-8 border border-slate-200">
-                <p class="text-[10px] font-bold text-slate-400 uppercase border-b pb-2 mb-4 text-center">Live Color Customization</p>
-                <div class="flex justify-between items-center"><label class="text-xs font-semibold">Header & Button</label><input type="color" id="inp-headercolor" oninput="changeColors()" class="w-10 h-10 border-none bg-transparent"></div>
-                <div class="flex justify-between items-center"><label class="text-xs font-semibold">Background Color</label><input type="color" id="inp-bgcolor" oninput="changeColors()" class="w-10 h-10 border-none bg-transparent"></div>
-            </div>
-
-            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase shadow-xl hover:bg-slate-800 transition-all">Update Cloud Data</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyazlkGnLOyVOx1STyfFv5VwFBCltcGZI0IUSs-oDP9EAYhBYK0FnxuSUxUMALG2Mem/exec";
-        const urlParams = new URLSearchParams(window.location.search);
-        const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
+        const SCRIPT_URL = "YOUR_APPS_SCRIPT_URL_HERE"; // আপনার Apps Script URL এখানে দিন
+        const params = new URLSearchParams(window.location.search);
+        const PROFILE_ID = params.get('id') || "RHR-BIZ-01";
         let userData = {};
-        let currentTheme = "theme-classic";
-        let currentUI = "1";
 
-        async function init() {
-            lucide.createIcons();
+        async function loadData() {
             try {
-                const res = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
-                const result = await res.json();
-                if (result.success) { 
-                    userData = result.data; 
-                    renderView(); 
-                    applyStoredSettings();
-                } else { document.getElementById('main-loader').innerText = "Card Not Found!"; }
-            } catch (e) { document.getElementById('main-loader').innerText = "Connection Error!"; }
+                const response = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
+                userData = await response.json();
+                renderView();
+            } catch (e) {
+                console.error("Error loading data", e);
+                document.getElementById('main-loader').innerText = "Data Not Found!";
+            }
         }
 
         function renderView() {
-            document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
-            document.getElementById('view-name').innerText = userData.Name;
-            document.getElementById('view-title').innerText = userData.Title;
-            document.getElementById('view-company').innerText = userData.Company;
+            // Data Mapping
+            document.getElementById('view-name').innerText = userData.Name || "No Name";
+            document.getElementById('view-title').innerText = userData.Title || "";
+            document.getElementById('view-company').innerText = userData.Company || "";
             document.getElementById('view-bio').innerText = userData.Bio || "";
-            document.getElementById('view-address').innerText = userData.Address;
-            document.getElementById('view-services').innerText = userData.Services;
+            document.getElementById('view-photo').src = userData.Photo || "https://via.placeholder.com/150";
+            document.getElementById('view-address').innerText = userData.Address || "";
+            document.getElementById('view-services').innerText = userData.Services || "";
 
+            // Links
             document.getElementById('link-mobile').href = `tel:${userData.Mobile}`;
             document.getElementById('link-email').href = `mailto:${userData.Email}`;
-            document.getElementById('link-website').href = userData.Website;
-            document.getElementById('link-facebook').href = userData.Facebook;
-            document.getElementById('link-linkedin').href = userData.LinkedIn;
+            document.getElementById('link-website').href = userData.Website || "#";
+            document.getElementById('link-facebook').href = userData.Facebook || "#";
+            document.getElementById('link-linkedin').href = userData.Linkedin || "#";
 
+            // UI Engine (image logic)
+            const uiNum = userData.User_Interface || "1";
+            const container = document.getElementById('card-container');
+            
+            // Clear old UI classes
+            for(let i=1; i<=10; i++) container.classList.remove(`ui-design-${i}`);
+            
+            // Add New UI class
+            container.classList.add(`ui-design-${uiNum}`);
+
+            // Visual Setup
             document.getElementById('main-loader').classList.add('hidden');
-            document.getElementById('card-container').classList.remove('hidden');
+            container.classList.remove('hidden');
             lucide.createIcons();
         }
 
-        function applyStoredSettings() {
-            const bg = userData.BG_Color || "#0100f0";
-            const head = userData.Header_Color || "#1e293b";
-            currentTheme = userData.Theme || "theme-classic";
-            currentUI = userData.User_Interface || "1";
-
-            document.body.style.backgroundColor = bg;
-            document.getElementById('header-bg').style.backgroundColor = head;
-            document.getElementById('save-btn-view').style.backgroundColor = head;
-            document.getElementById('inp-bgcolor').value = bg;
-            document.getElementById('inp-headercolor').value = head;
-            
-            setTheme(currentTheme);
-        }
-
-        function checkPin() {
-            if(document.getElementById('pin-input').value == (userData.Admin_PIN || "1111")) {
-                setupEditForm();
-                closeModal('pin-modal');
-                openModal('edit-modal');
-            } else { alert("Wrong PIN!"); }
-            document.getElementById('pin-input').value = "";
-        }
-
-        function setupEditForm() {
-            // UI Selector Buttons (1 to 10)
-            let uiHtml = "";
-            for(let i=1; i<=10; i++) {
-                uiHtml += `<div onclick="setUI('${i}')" id="btn-ui-${i}" class="ui-grid-btn ${currentUI == i ? 'active-theme' : 'bg-slate-50'}">UI-${i}</div>`;
-            }
-            document.getElementById('ui-selector').innerHTML = uiHtml;
-
-            const fields = [
-                {id: 'name', label: 'Full Name', val: userData.Name},
-                {id: 'title', label: 'Designation', val: userData.Title},
-                {id: 'company', label: 'Company Name', val: userData.Company},
-                {id: 'bio', label: 'Short Bio', val: userData.Bio},
-                {id: 'mobile', label: 'Mobile Number', val: userData.Mobile},
-                {id: 'email', label: 'Email Address', val: userData.Email},
-                {id: 'website', label: 'Website Link', val: userData.Website},
-                {id: 'facebook', label: 'Facebook Link', val: userData.Facebook},
-                {id: 'linkedin', label: 'LinkedIn Link', val: userData.LinkedIn},
-                {id: 'address', label: 'Full Address', val: userData.Address},
-                {id: 'services', label: 'Our Services', val: userData.Services},
-                {id: 'photo', label: 'Photo URL', val: userData.Photo},
-                {id: 'pin', label: 'Admin Access PIN', val: userData.Admin_PIN}
-            ];
-            document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
-                <div>
-                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
-                    <input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm focus:ring-2 focus:ring-blue-100">
-                </div>`).join('');
-        }
-
-        function setUI(uiNum) {
-            currentUI = uiNum;
-            document.querySelectorAll('[id^="btn-ui-"]').forEach(b => b.classList.remove('active-theme'));
-            document.getElementById(`btn-ui-${uiNum}`).classList.add('active-theme');
-        }
-
-        function setTheme(theme) {
-            currentTheme = theme;
-            const card = document.getElementById('card-container');
-            card.classList.remove('theme-classic', 'theme-border', 'theme-glass', 'theme-minimal', 'theme-bold');
-            card.classList.add(theme);
-            document.querySelectorAll('[id^="btn-theme-"]').forEach(b => b.classList.remove('active-theme'));
-            if(document.getElementById(`btn-${theme}`)) document.getElementById(`btn-${theme}`).classList.add('active-theme');
-        }
-
-        function changeColors() {
-            const bg = document.getElementById('inp-bgcolor').value;
-            const head = document.getElementById('inp-headercolor').value;
-            document.body.style.backgroundColor = bg;
-            document.getElementById('header-bg').style.backgroundColor = head;
-            document.getElementById('save-btn-view').style.backgroundColor = head;
-        }
-
-        async function saveData() {
-            const btn = document.getElementById('save-btn');
-            btn.innerText = "Connecting to Cloud..."; btn.disabled = true;
-            
-            const data = {
-                id: PROFILE_ID,
-                pin: document.getElementById('inp-pin').value,
-                name: document.getElementById('inp-name').value,
-                title: document.getElementById('inp-title').value,
-                company: document.getElementById('inp-company').value,
-                bio: document.getElementById('inp-bio').value,
-                mobile: document.getElementById('inp-mobile').value,
-                email: document.getElementById('inp-email').value,
-                website: document.getElementById('inp-website').value,
-                facebook: document.getElementById('inp-facebook').value,
-                linkedin: document.getElementById('inp-linkedin').value,
-                address: document.getElementById('inp-address').value,
-                services: document.getElementById('inp-services').value,
-                photo: document.getElementById('inp-photo').value,
-                bgColor: document.getElementById('inp-bgcolor').value,
-                headerColor: document.getElementById('inp-headercolor').value,
-                theme: currentTheme,
-                userInterface: currentUI
-            };
-
-            try {
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
-                alert("Data Synced Successfully!");
-                location.reload();
-            } catch (e) { alert("Save failed! Please check connection."); btn.disabled = false; btn.innerText = "Update Cloud Data"; }
-        }
-
         function saveVCF() {
-            const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL:${userData.Mobile}\nEMAIL:${userData.Email}\nURL:${userData.Website}\nEND:VCARD`;
-            const blob = new Blob([vcf], { type: 'text/vcard' });
+            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTEL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
+            const blob = new Blob([vcard], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `${userData.Name}.vcf`; a.click();
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${userData.Name}.vcf`;
+            a.click();
         }
 
-        function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        window.onload = init;
+        loadData();
     </script>
 </body>
 </html>
