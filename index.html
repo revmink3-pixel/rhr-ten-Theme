@@ -3,97 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RHR Digital Business Card</title>
+    <title id="page-title">Digital Business Card | RHR Smart Way</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; transition: all 0.5s ease; }
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; overflow-x: hidden; }
         
-        /* Base Card Styling */
-        .glass-card { transition: all 0.4s ease; min-height: 550px; position: relative; }
-        .profile-img { object-fit: cover; transition: all 0.3s; }
-
-        /* --- UI DESIGNS FROM YOUR IMAGES --- */
-
-        /* UI-1: Classic Professional (Francisco Andrade) */
-        .ui-design-1 { background: #ffffff; border-radius: 2rem; overflow: hidden; }
-        .ui-design-1 #header-bg { background: #1e293b; height: 120px; clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%); }
-        .ui-design-1 #view-photo { border: 4px solid #ffffff; width: 120px; height: 120px; margin-top: -60px; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
-
-        /* UI-2: Modern Blue (Donna Stroupe) */
-        .ui-design-2 { background: #f8fafc; border-radius: 1.5rem; text-align: left !important; }
-        .ui-design-2 #header-bg { background: linear-gradient(135deg, #1e3a8a 70%, #0ea5e9 100%); height: 180px; }
-        .ui-design-2 #view-photo { width: 130px; height: 130px; border-radius: 1rem; margin: -100px 0 20px 20px; border: 5px solid #fff; }
-        .ui-design-2 #view-name { text-align: left; padding-left: 20px; color: #1e3a8a; }
-
-        /* UI-3: Elegant Dark (Juliana Silva) */
-        .ui-design-3 { background: #111827; color: white; border-radius: 2.5rem; }
-        .ui-design-3 #header-bg { background: #083344; height: 100px; border-radius: 0 0 50% 50%; }
-        .ui-design-3 #view-photo { border: 4px solid #22d3ee; width: 130px; height: 130px; border-radius: 50%; }
-        .ui-design-3 .icon-box { background: #1f2937; color: #22d3ee; }
-
-        /* UI-4: Vibrant Gradient (Olivia Wilson) */
-        .ui-design-4 { background: linear-gradient(to bottom, #d946ef, #fb923c); color: white; }
-        .ui-design-4 #view-photo { border: 6px solid rgba(255,255,255,0.4); width: 140px; height: 140px; }
-
-        /* UI-5: Corporate Grey (Olivia Wilson - Manager) */
-        .ui-design-5 { background: #ffffff; border-radius: 0; border-left: 15px solid #334155; }
-        .ui-design-5 #header-bg { background: #f1f5f9; height: 80px; }
-        .ui-design-5 #view-photo { border-radius: 0; width: 120px; height: 120px; border: 2px solid #334155; }
-
-        /* UI-6: Bold Red/Black (Mariana Anderson) */
-        .ui-design-6 { background: #ffffff; border-radius: 2rem; overflow: hidden; }
-        .ui-design-6 #header-bg { background: #1f2937; height: 200px; clip-path: ellipse(100% 100% at 50% 0%); }
-        .ui-design-6 #view-photo { border: 5px solid #ef4444; margin-top: -100px; }
-        .ui-design-6 #save-btn-view { background: #ef4444; }
-
-        /* UI-7: Orange Minimal (Olivia Wilson - Marketing) */
-        .ui-design-7 { background: #1f2937; color: white; }
-        .ui-design-7 #header-bg { background: #f97316; height: 150px; border-radius: 0 0 100px 0; }
-        .ui-design-7 #view-photo { border-radius: 50%; border: 5px solid #1f2937; margin-top: -75px; }
-
-        /* UI-8: Dynamic Diagonal (Olivia Wilson - Manager) */
-        .ui-design-8 { background: #2563eb; color: white; clip-path: inset(0 round 2rem); }
-        .ui-design-8 #header-bg { background: #ffffff; height: 120px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%); }
-        .ui-design-8 #view-photo { margin-top: -60px; border: 5px solid #2563eb; }
-
-        /* UI-9: Real Estate Style (Olivia Wilson) */
-        .ui-design-9 { background: #ffffff; border-radius: 1rem; }
-        .ui-design-9 #header-bg { background: #f43f5e; height: 140px; clip-path: circle(70% at 50% 0%); }
-        .ui-design-9 #view-photo { border-radius: 0.5rem; margin-top: -70px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
-
-        /* UI-10: Luxury Gold (Daniel Gallego) */
-        .ui-design-10 { background: #000000; color: #fbbf24; border: 2px solid #fbbf24; }
-        .ui-design-10 #view-photo { border: 3px solid #fbbf24; padding: 5px; }
-        .ui-design-10 .social-text-link { background: #fbbf24; color: black; }
-
-        /* Utility */
+        .glass-card { transition: all 0.4s ease; border-radius: 2.5rem; background: white; min-height: 600px; position: relative; overflow: hidden; }
+        .profile-img { object-fit: cover; transition: all 0.3s; z-index: 10; position: relative; }
         .hidden { display: none; }
-        .icon-box { min-width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: #f1f5f9; color: #475569; }
-        .social-text-link { flex: 1; padding: 12px; text-align: center; border-radius: 12px; background: #f1f5f9; font-weight: 700; font-size: 13px; }
+
+        /* --- 10 Unique UI Designs based on your images --- */
+
+        /* UI-1: Classic Professional (Francisco) */
+        .ui-1 #header-bg { background: #1e293b; height: 140px; clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%); }
+        .ui-1 #view-photo { width: 120px; height: 120px; margin-top: -60px; border: 5px solid white; border-radius: 50%; }
+
+        /* UI-2: Modern Corporate (Donna) */
+        .ui-2 { text-align: left !important; }
+        .ui-2 #header-bg { background: linear-gradient(135deg, #1e3a8a 0%, #0ea5e9 100%); height: 160px; }
+        .ui-2 #view-photo { width: 130px; height: 130px; border-radius: 1rem; margin: -80px 0 20px 20px; border: 5px solid white; }
+        .ui-2 #view-name, .ui-2 #view-title, .ui-2 #view-bio { text-align: left; padding-left: 20px; }
+
+        /* UI-3: Dark Elegant (Juliana) */
+        .ui-3 { background: #0f172a; color: white; }
+        .ui-3 #header-bg { background: #083344; height: 100px; border-radius: 0 0 50% 50%; }
+        .ui-3 #view-photo { border: 4px solid #22d3ee; width: 130px; height: 130px; border-radius: 50%; }
+        .ui-3 #view-name { color: #22d3ee; }
+        .ui-3 .icon-box { background: #1e293b; color: #22d3ee; border: none; }
+
+        /* UI-4: Vibrant Gradient (Olivia) */
+        .ui-4 { background: linear-gradient(to bottom, #d946ef, #fb923c); color: white; }
+        .ui-4 #view-photo { border: 8px solid rgba(255,255,255,0.3); width: 150px; height: 150px; }
+
+        /* UI-5: Minimalist Box (Olivia Manager) */
+        .ui-5 { border-top: 15px solid #334155; border-radius: 0; }
+        .ui-5 #view-photo { border-radius: 0; width: 120px; height: 120px; border: 3px solid #334155; }
+
+        /* UI-6: Sleek Diagonal (Mariana) */
+        .ui-6 #header-bg { background: #111827; height: 220px; clip-path: ellipse(100% 80% at 50% 0%); }
+        .ui-6 #view-photo { border: 5px solid #ef4444; margin-top: -110px; }
+        .ui-6 #save-btn-view { background: #ef4444; }
+
+        /* UI-7: Orange Clean (Olivia Marketing) */
+        .ui-7 #header-bg { background: #f97316; height: 140px; border-radius: 0 0 100px 0; }
+        .ui-7 #view-photo { border-radius: 50%; border: 5px solid white; margin-top: -70px; }
+        .ui-7 #view-title { color: #f97316; }
+
+        /* UI-8: Blue Dynamic (Olivia Manager) */
+        .ui-8 { background: #eff6ff; }
+        .ui-8 #header-bg { background: #2563eb; height: 120px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 60%); }
+        .ui-8 #view-photo { border: 4px solid #2563eb; }
+
+        /* UI-9: Real Estate Style (Olivia) */
+        .ui-9 #header-bg { background: #f43f5e; height: 150px; clip-path: circle(70% at 50% 0%); }
+        .ui-9 #view-photo { border-radius: 0.75rem; margin-top: -75px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+
+        /* UI-10: Luxury Black (Daniel) */
+        .ui-10 { background: #000; color: #fbbf24; border: 1px solid #fbbf24; }
+        .ui-10 #header-bg { background: #fbbf24; height: 10px; }
+        .ui-10 #view-photo { border: 2px solid #fbbf24; padding: 4px; }
+        .ui-10 .icon-box { background: #111; color: #fbbf24; }
+
+        /* General Elements */
+        .icon-box { min-width: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f1f5f9; color: #475569; }
+        .social-text-link { flex: 1; padding: 12px; text-align: center; border-radius: 12px; background: #f1f5f9; font-weight: 700; font-size: 13px; color: #1e293b; }
     </style>
 </head>
 <body id="body-bg" class="bg-slate-900 min-h-screen flex items-center justify-center p-4">
 
-    <div id="main-loader" class="text-white animate-pulse font-bold">RHR SYSTEM LOADING...</div>
+    <div id="main-loader" class="text-white text-center">
+        <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-white mx-auto mb-4"></div>
+        <p class="font-bold italic">RHR Cloud Syncing...</p>
+    </div>
 
     <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl hidden">
         <div id="header-bg"></div>
         
         <div class="px-6 pb-8 text-center">
-            <img id="view-photo" src="" alt="Profile" class="profile-img mx-auto mb-4 shadow-xl">
+            <img id="view-photo" src="" alt="Profile" class="profile-img mx-auto mb-4">
             
-            <h1 id="view-name" class="text-2xl font-800 tracking-tight mb-1"></h1>
+            <h1 id="view-name" class="text-2xl font-extrabold tracking-tight"></h1>
             <p id="view-title" class="text-sm font-bold uppercase tracking-widest mb-1 opacity-80"></p>
-            <p id="view-company" class="text-xs font-medium mb-4 opacity-60"></p>
+            <p id="view-company" class="text-xs opacity-60 mb-4 font-semibold"></p>
             
-            <p id="view-bio" class="text-xs italic mb-6 px-4 opacity-80"></p>
+            <div class="mb-6 px-2"><p id="view-bio" class="text-xs italic leading-relaxed opacity-75"></p></div>
 
-            <button id="save-btn-view" onclick="saveVCF()" class="w-full py-4 rounded-xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg bg-slate-800 text-white">
-                <i data-lucide="user-plus"></i> SAVE CONTACT
+            <button id="save-btn-view" onclick="saveVCF()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg">
+                <i data-lucide="user-plus" class="w-4 h-4"></i> SAVE CONTACT
             </button>
 
             <div class="flex justify-center gap-3 mb-4">
@@ -108,85 +107,86 @@
             </div>
 
             <div class="space-y-3 text-left">
-                <div class="p-4 bg-black/5 rounded-xl flex gap-4">
-                    <i data-lucide="map-pin" class="w-5 h-5 opacity-50"></i>
-                    <div>
-                        <span class="text-[10px] font-bold uppercase opacity-50">Address</span>
-                        <p id="view-address" class="text-sm font-semibold"></p>
-                    </div>
+                <div class="flex gap-4 items-start p-4 bg-black/5 rounded-2xl">
+                    <i data-lucide="map-pin" class="w-5 h-5 opacity-40 mt-1"></i>
+                    <div><p class="text-[9px] font-bold opacity-40 uppercase">Address</p><p id="view-address" class="text-sm font-semibold"></p></div>
                 </div>
-                <div class="p-4 bg-black/5 rounded-xl flex gap-4">
-                    <i data-lucide="briefcase" class="w-5 h-5 opacity-50"></i>
-                    <div>
-                        <span class="text-[10px] font-bold uppercase opacity-50">Services</span>
-                        <p id="view-services" class="text-sm font-semibold"></p>
-                    </div>
+                <div class="flex gap-4 items-start p-4 bg-black/5 rounded-2xl">
+                    <i data-lucide="briefcase" class="w-5 h-5 opacity-40 mt-1"></i>
+                    <div><p class="text-[9px] font-bold opacity-40 uppercase">Services</p><p id="view-services" class="text-sm font-semibold"></p></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "YOUR_APPS_SCRIPT_URL_HERE"; // আপনার Apps Script URL এখানে দিন
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-1vcPqCVDFuRa46_zThEtAGbB8pA_Loucr3DZE3jICmX4S5pmQCmttyCY4iF701R-/exec";
         const params = new URLSearchParams(window.location.search);
         const PROFILE_ID = params.get('id') || "RHR-BIZ-01";
         let userData = {};
 
-        async function loadData() {
+        async function init() {
             try {
-                const response = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
-                userData = await response.json();
-                renderView();
+                const res = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
+                const result = await res.json();
+                if (result.success) {
+                    userData = result.data;
+                    renderView();
+                } else {
+                    document.getElementById('main-loader').innerHTML = "<p class='text-red-400'>Card Not Found!</p>";
+                }
             } catch (e) {
-                console.error("Error loading data", e);
-                document.getElementById('main-loader').innerText = "Data Not Found!";
+                document.getElementById('main-loader').innerText = "Network Error!";
             }
         }
 
         function renderView() {
-            // Data Mapping
-            document.getElementById('view-name').innerText = userData.Name || "No Name";
-            document.getElementById('view-title').innerText = userData.Title || "";
-            document.getElementById('view-company').innerText = userData.Company || "";
-            document.getElementById('view-bio').innerText = userData.Bio || "";
-            document.getElementById('view-photo').src = userData.Photo || "https://via.placeholder.com/150";
-            document.getElementById('view-address').innerText = userData.Address || "";
-            document.getElementById('view-services').innerText = userData.Services || "";
+            // Mapping Data
+            document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
+            document.getElementById('view-name').innerText = userData.Name;
+            document.getElementById('view-title').innerText = userData.Title;
+            document.getElementById('view-company').innerText = userData.Company;
+            document.getElementById('view-bio').innerText = userData.Bio;
+            document.getElementById('view-address').innerText = userData.Address;
+            document.getElementById('view-services').innerText = userData.Services;
 
             // Links
             document.getElementById('link-mobile').href = `tel:${userData.Mobile}`;
             document.getElementById('link-email').href = `mailto:${userData.Email}`;
-            document.getElementById('link-website').href = userData.Website || "#";
-            document.getElementById('link-facebook').href = userData.Facebook || "#";
-            document.getElementById('link-linkedin').href = userData.Linkedin || "#";
+            document.getElementById('link-website').href = userData.Website;
+            document.getElementById('link-facebook').href = userData.Facebook;
+            document.getElementById('link-linkedin').href = userData.LinkedIn;
 
-            // UI Engine (image logic)
+            // Background & UI Logic
+            document.body.style.backgroundColor = userData.BG_Color || "#0f172a";
             const uiNum = userData.User_Interface || "1";
-            const container = document.getElementById('card-container');
+            const card = document.getElementById('card-container');
             
-            // Clear old UI classes
-            for(let i=1; i<=10; i++) container.classList.remove(`ui-design-${i}`);
+            // Apply UI Class
+            card.classList.add(`ui-${uiNum}`);
             
-            // Add New UI class
-            container.classList.add(`ui-design-${uiNum}`);
+            // Custom Colors for certain elements
+            if(userData.Header_Color) {
+                const header = document.getElementById('header-bg');
+                if(!card.classList.contains('ui-2') && !card.classList.contains('ui-4')) {
+                    header.style.backgroundColor = userData.Header_Color;
+                }
+                document.getElementById('save-btn-view').style.backgroundColor = userData.Header_Color;
+            }
 
-            // Visual Setup
             document.getElementById('main-loader').classList.add('hidden');
-            container.classList.remove('hidden');
+            card.classList.remove('hidden');
             lucide.createIcons();
         }
 
         function saveVCF() {
-            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTEL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
-            const blob = new Blob([vcard], { type: 'text/vcard' });
+            const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL:${userData.Mobile}\nEMAIL:${userData.Email}\nURL:${userData.Website}\nEND:VCARD`;
+            const blob = new Blob([vcf], { type: 'text/vcard' });
             const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${userData.Name}.vcf`;
-            a.click();
+            const a = document.createElement('a'); a.href = url; a.download = `${userData.Name}.vcf`; a.click();
         }
 
-        loadData();
+        window.onload = init;
     </script>
 </body>
 </html>
