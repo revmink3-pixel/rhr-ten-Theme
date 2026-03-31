@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Digital Business Card | RHR Smart Way</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; }
+        .glass-card { transition: all 0.4s ease; border-radius: 2.5rem; }
+        
+        /* Themes */
+        .theme-classic { background: #ffffff; border-radius: 2.5rem; }
+        .theme-border { background: #ffffff; border: 2px solid #e2e8f0; }
+        .theme-glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
+        .theme-minimal { background: #ffffff; border-radius: 1rem; box-shadow: none; border: 1px solid #f1f5f9; }
+        .theme-bold { background: #ffffff; border-top: 10px solid; }
+
+        .profile-img { width: 110px; height: 110px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .icon-box { min-width: 48px; min-height: 48px; flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; border: 1px solid #f1f5f9; transition: all 0.3s; }
+        .social-text-link { flex: 1; padding: 1rem; text-align: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; color: #334155; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; }
+        
+        .active-theme { border: 2px solid #2563eb !important; background: #eff6ff !important; color: #2563eb !important; }
+        #header-bg, #save-btn-view, body { transition: background-color 0.3s; }
+        
+        /* UI Preview Grid Styles */
+        .ui-grid-btn { padding: 8px; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; text-align: center; font-size: 10px; font-weight: 800; transition: all 0.2s; }
+        .ui-grid-btn:hover { background: #f1f5f9; }
+    </style>
+</head>
+<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#0100f0]">
+    
+    <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400 hover:text-blue-600 transition-colors">
+        <i data-lucide="settings" class="w-5 h-5"></i>
+    </button>
+
+    <div id="main-loader" class="text-white font-medium animate-pulse italic">Connecting with RHR Cloud...</div>
+    
+    <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
+        <div id="header-bg" class="h-28 bg-[#1e293b]"></div> 
+        <div class="px-6 pb-8 -mt-14 text-center">
+            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-3 bg-slate-100">
+            <h1 id="view-name" class="text-xl font-bold tracking-tight text-slate-800"></h1>
+            <p id="view-title" class="text-blue-600 font-bold text-[10px] uppercase tracking-widest italic"></p>
+            <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-4 uppercase tracking-wider"></p>
+            <div class="mb-6 px-2"><p id="view-bio" class="text-slate-500 text-xs leading-relaxed italic"></p></div>
+
+            <button id="save-btn-view" onclick="saveVCF()" class="w-full bg-[#1e293b] text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg hover:opacity-90 transition-all">
+                <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
+            </button>
+
+            <div class="flex justify-center gap-2 mb-3">
+                <a id="link-mobile" href="#" class="icon-box"><i data-lucide="phone" class="w-5 h-5"></i></a>
+                <a id="link-email" href="#" class="icon-box"><i data-lucide="mail" class="w-5 h-5"></i></a>
+                <a id="link-website" href="#" target="_blank" class="icon-box"><i data-lucide="globe" class="w-5 h-5"></i></a>
+            </div>
+
+            <div class="flex justify-center gap-2 mb-8">
+                <a id="link-facebook" href="#" target="_blank" class="social-text-link">Facebook</a>
+                <a id="link-linkedin" href="#" target="_blank" class="social-text-link">LinkedIn</a>
+            </div>
+
+            <div class="space-y-3 text-left">
+                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 mt-1"></i>
+                    <div><p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Office Address</p><p id="view-address" class="text-sm text-slate-700 font-semibold"></p></div>
+                </div>
+                <div class="flex gap-4 items-start p-4 bg-slate-50/50 rounded-2xl border border-slate-100">
+                    <i data-lucide="briefcase" class="w-5 h-5 text-slate-400 mt-1"></i>
+                    <div><p class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Services</p><p id="view-services" class="text-sm text-slate-700 font-semibold"></p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center p-6 z-[100]">
+        <div class="bg-white rounded-3xl p-8 max-w-xs w-full text-center shadow-2xl">
+            <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Access</h3>
+            <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 mb-8 focus:outline-none" maxlength="4" placeholder="••••">
+            <div class="flex gap-3">
+                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Cancel</button>
+                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="fixed inset-0 bg-white hidden overflow-y-auto p-6 z-[200]">
+        <div class="max-w-md mx-auto pb-20">
+            <div class="flex justify-between items-center mb-10 border-b pb-4">
+                <h2 class="text-xl font-bold text-slate-800">Card Settings</h2>
+                <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4 text-center">User Interface Design (1-10)</p>
+            <div id="ui-selector" class="grid grid-cols-5 gap-2 mb-8 border-b pb-8">
+                </div>
+
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Choose Style Theme</p>
+            <div class="grid grid-cols-3 gap-2 mb-8 border-b pb-8">
+                <div onclick="setTheme('theme-classic')" id="btn-theme-classic" class="ui-grid-btn bg-slate-50">Classic</div>
+                <div onclick="setTheme('theme-border')" id="btn-theme-border" class="ui-grid-btn bg-slate-50">Modern</div>
+                <div onclick="setTheme('theme-glass')" id="btn-theme-glass" class="ui-grid-btn bg-slate-50">Glass</div>
+            </div>
+
+            <div id="edit-form-fields" class="space-y-5 mb-8"></div>
+            
+            <div class="p-5 bg-slate-50 rounded-2xl space-y-4 mb-8 border border-slate-200">
+                <p class="text-[10px] font-bold text-slate-400 uppercase border-b pb-2 mb-4 text-center">Live Color Customization</p>
+                <div class="flex justify-between items-center"><label class="text-xs font-semibold">Header & Button</label><input type="color" id="inp-headercolor" oninput="changeColors()" class="w-10 h-10 border-none bg-transparent"></div>
+                <div class="flex justify-between items-center"><label class="text-xs font-semibold">Background Color</label><input type="color" id="inp-bgcolor" oninput="changeColors()" class="w-10 h-10 border-none bg-transparent"></div>
+            </div>
+
+            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase shadow-xl hover:bg-slate-800 transition-all">Update Cloud Data</button>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyazlkGnLOyVOx1STyfFv5VwFBCltcGZI0IUSs-oDP9EAYhBYK0FnxuSUxUMALG2Mem/exec";
+        const urlParams = new URLSearchParams(window.location.search);
+        const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
+        let userData = {};
+        let currentTheme = "theme-classic";
+        let currentUI = "1";
+
+        async function init() {
+            lucide.createIcons();
+            try {
+                const res = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
+                const result = await res.json();
+                if (result.success) { 
+                    userData = result.data; 
+                    renderView(); 
+                    applyStoredSettings();
+                } else { document.getElementById('main-loader').innerText = "Card Not Found!"; }
+            } catch (e) { document.getElementById('main-loader').innerText = "Connection Error!"; }
+        }
+
+        function renderView() {
+            document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
+            document.getElementById('view-name').innerText = userData.Name;
+            document.getElementById('view-title').innerText = userData.Title;
+            document.getElementById('view-company').innerText = userData.Company;
+            document.getElementById('view-bio').innerText = userData.Bio || "";
+            document.getElementById('view-address').innerText = userData.Address;
+            document.getElementById('view-services').innerText = userData.Services;
+
+            document.getElementById('link-mobile').href = `tel:${userData.Mobile}`;
+            document.getElementById('link-email').href = `mailto:${userData.Email}`;
+            document.getElementById('link-website').href = userData.Website;
+            document.getElementById('link-facebook').href = userData.Facebook;
+            document.getElementById('link-linkedin').href = userData.LinkedIn;
+
+            document.getElementById('main-loader').classList.add('hidden');
+            document.getElementById('card-container').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function applyStoredSettings() {
+            const bg = userData.BG_Color || "#0100f0";
+            const head = userData.Header_Color || "#1e293b";
+            currentTheme = userData.Theme || "theme-classic";
+            currentUI = userData.User_Interface || "1";
+
+            document.body.style.backgroundColor = bg;
+            document.getElementById('header-bg').style.backgroundColor = head;
+            document.getElementById('save-btn-view').style.backgroundColor = head;
+            document.getElementById('inp-bgcolor').value = bg;
+            document.getElementById('inp-headercolor').value = head;
+            
+            setTheme(currentTheme);
+        }
+
+        function checkPin() {
+            if(document.getElementById('pin-input').value == (userData.Admin_PIN || "1111")) {
+                setupEditForm();
+                closeModal('pin-modal');
+                openModal('edit-modal');
+            } else { alert("Wrong PIN!"); }
+            document.getElementById('pin-input').value = "";
+        }
+
+        function setupEditForm() {
+            // UI Selector Buttons (1 to 10)
+            let uiHtml = "";
+            for(let i=1; i<=10; i++) {
+                uiHtml += `<div onclick="setUI('${i}')" id="btn-ui-${i}" class="ui-grid-btn ${currentUI == i ? 'active-theme' : 'bg-slate-50'}">UI-${i}</div>`;
+            }
+            document.getElementById('ui-selector').innerHTML = uiHtml;
+
+            const fields = [
+                {id: 'name', label: 'Full Name', val: userData.Name},
+                {id: 'title', label: 'Designation', val: userData.Title},
+                {id: 'company', label: 'Company Name', val: userData.Company},
+                {id: 'bio', label: 'Short Bio', val: userData.Bio},
+                {id: 'mobile', label: 'Mobile Number', val: userData.Mobile},
+                {id: 'email', label: 'Email Address', val: userData.Email},
+                {id: 'website', label: 'Website Link', val: userData.Website},
+                {id: 'facebook', label: 'Facebook Link', val: userData.Facebook},
+                {id: 'linkedin', label: 'LinkedIn Link', val: userData.LinkedIn},
+                {id: 'address', label: 'Full Address', val: userData.Address},
+                {id: 'services', label: 'Our Services', val: userData.Services},
+                {id: 'photo', label: 'Photo URL', val: userData.Photo},
+                {id: 'pin', label: 'Admin Access PIN', val: userData.Admin_PIN}
+            ];
+            document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
+                    <input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm focus:ring-2 focus:ring-blue-100">
+                </div>`).join('');
+        }
+
+        function setUI(uiNum) {
+            currentUI = uiNum;
+            document.querySelectorAll('[id^="btn-ui-"]').forEach(b => b.classList.remove('active-theme'));
+            document.getElementById(`btn-ui-${uiNum}`).classList.add('active-theme');
+        }
+
+        function setTheme(theme) {
+            currentTheme = theme;
+            const card = document.getElementById('card-container');
+            card.classList.remove('theme-classic', 'theme-border', 'theme-glass', 'theme-minimal', 'theme-bold');
+            card.classList.add(theme);
+            document.querySelectorAll('[id^="btn-theme-"]').forEach(b => b.classList.remove('active-theme'));
+            if(document.getElementById(`btn-${theme}`)) document.getElementById(`btn-${theme}`).classList.add('active-theme');
+        }
+
+        function changeColors() {
+            const bg = document.getElementById('inp-bgcolor').value;
+            const head = document.getElementById('inp-headercolor').value;
+            document.body.style.backgroundColor = bg;
+            document.getElementById('header-bg').style.backgroundColor = head;
+            document.getElementById('save-btn-view').style.backgroundColor = head;
+        }
+
+        async function saveData() {
+            const btn = document.getElementById('save-btn');
+            btn.innerText = "Connecting to Cloud..."; btn.disabled = true;
+            
+            const data = {
+                id: PROFILE_ID,
+                pin: document.getElementById('inp-pin').value,
+                name: document.getElementById('inp-name').value,
+                title: document.getElementById('inp-title').value,
+                company: document.getElementById('inp-company').value,
+                bio: document.getElementById('inp-bio').value,
+                mobile: document.getElementById('inp-mobile').value,
+                email: document.getElementById('inp-email').value,
+                website: document.getElementById('inp-website').value,
+                facebook: document.getElementById('inp-facebook').value,
+                linkedin: document.getElementById('inp-linkedin').value,
+                address: document.getElementById('inp-address').value,
+                services: document.getElementById('inp-services').value,
+                photo: document.getElementById('inp-photo').value,
+                bgColor: document.getElementById('inp-bgcolor').value,
+                headerColor: document.getElementById('inp-headercolor').value,
+                theme: currentTheme,
+                userInterface: currentUI
+            };
+
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+                alert("Data Synced Successfully!");
+                location.reload();
+            } catch (e) { alert("Save failed! Please check connection."); btn.disabled = false; btn.innerText = "Update Cloud Data"; }
+        }
+
+        function saveVCF() {
+            const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL:${userData.Mobile}\nEMAIL:${userData.Email}\nURL:${userData.Website}\nEND:VCARD`;
+            const blob = new Blob([vcf], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `${userData.Name}.vcf`; a.click();
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onload = init;
+    </script>
+</body>
+</html>
