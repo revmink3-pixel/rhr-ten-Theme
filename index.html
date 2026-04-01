@@ -3,68 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title id="page-title">Digital Business Card | RHR Smart Way</title>
-    <meta name="description" id="meta-desc" content="Connect with me via my official digital business card.">
     
-    <meta property="og:type" content="website">
-    <meta property="og:title" id="og-title" content="Digital Business Card">
-    <meta property="og:description" id="og-desc" content="Tap to save my contact details instantly.">
-    <meta property="og:image" id="og-image" content="">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; }
-        .glass-card { transition: all 0.4s ease; border-radius: 2.5rem; position: relative; }
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; overflow-x: hidden; }
+        .glass-card { transition: all 0.4s ease; border-radius: 2.5rem; position: relative; z-index: 10; }
         
         /* Themes */
         .theme-classic { background: #ffffff; }
         .theme-border { background: #ffffff; border: 2px solid #e2e8f0; }
         .theme-glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
 
-        /* UI Interfaces (1-10) Based on your designs */
-        .ui-1 #header-bg { clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%); height: 140px; }
-        .ui-2 #header-bg { clip-path: ellipse(100% 100% at 50% 0%); height: 160px; }
-        .ui-3 .profile-img { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); border-radius: 0 !important; }
-        .ui-4 .glass-card { border-left: 12px solid #1e293b; }
-        .ui-5 #body-bg { background: #000 !important; }
-        .ui-5 .glass-card { background: #111; color: white; border: 1px solid #f3a633; }
-        .ui-6 #header-bg { transform: skewY(-5deg); margin-top: -20px; }
-        .ui-7 .icon-box { border-radius: 50%; background: white; border: 2px solid #eee; }
-        .ui-8 .social-text-link { background: #1e293b; color: white; border: none; }
-        .ui-9 #header-bg { clip-path: polygon(0 0, 100% 0, 0 100%); height: 180px; }
-        .ui-10 .glass-card { box-shadow: 0 50px 100px rgba(0,0,0,0.3); border: 2px solid gold; }
+        /* UI Interfaces (1-10) - CSS matching your designs */
+        .ui-1 #header-bg { clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%); height: 160px; }
+        .ui-2 #header-bg { clip-path: ellipse(100% 100% at 50% 0%); height: 180px; }
+        .ui-3 .profile-img { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); border-radius: 0 !important; width: 130px; height: 130px; }
+        .ui-4 .glass-card { border-left: 15px solid #1e293b; border-radius: 1rem !important; }
+        .ui-5 #card-container { background: #111; color: white; border: 1px solid #f3a633; }
+        .ui-5 #view-name, .ui-5 #view-bio { color: white; }
+        .ui-6 #header-bg { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 40%); height: 180px; }
+        .ui-7 #header-bg { border-radius: 0 0 50px 50px; }
+        .ui-8 .social-text-link { background: #1e293b; color: white; }
+        .ui-9 #header-bg { clip-path: polygon(0 0, 100% 0, 0 100%); height: 200px; }
+        .ui-10 .glass-card { box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 2px solid gold; }
 
-        .profile-img { width: 110px; height: 110px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 10; position: relative; }
-        .icon-box { min-width: 48px; min-height: 48px; flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; color: #64748b; border: 1px solid #f1f5f9; transition: all 0.3s; }
-        .social-text-link { flex: 1; padding: 1rem; text-align: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; color: #334155; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; }
+        .profile-img { width: 115px; height: 115px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        .icon-box { min-width: 48px; min-height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; transition: 0.3s; }
+        .social-text-link { flex: 1; padding: 0.8rem; text-align: center; border-radius: 1rem; background: #f8fafc; border: 1px solid #f1f5f9; font-weight: 600; font-size: 0.8rem; }
         
-        #header-bg, #save-btn-view, body { transition: background-color 0.3s, color 0.3s; }
+        #header-bg, #save-btn-view, body { transition: 0.3s; }
     </style>
 </head>
-<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-[#0100f0]">
+<body id="body-bg" class="min-h-screen flex items-center justify-center p-4">
     
-    <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400 hover:text-blue-600 transition-colors">
+    <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white shadow-lg rounded-full z-50 text-slate-400 hover:text-blue-600">
         <i data-lucide="settings" class="w-5 h-5"></i>
     </button>
 
-    <div id="main-loader" class="text-white font-medium animate-pulse italic">Connecting with RHR Cloud...</div>
+    <div id="main-loader" class="text-white font-medium animate-pulse">Connecting RHR Cloud...</div>
     
     <div id="card-container" class="max-w-sm w-full glass-card shadow-2xl overflow-hidden hidden">
-        <div id="header-bg" class="h-28 bg-[#1e293b]"></div> 
+        <div id="header-bg" class="h-28"></div> 
         <div class="px-6 pb-8 -mt-14 text-center">
-            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto mb-3 bg-slate-100">
-            <h1 id="view-name" class="text-xl font-bold tracking-tight text-slate-800"></h1>
+            <img id="view-photo" src="" alt="Profile" class="profile-img rounded-full mx-auto bg-slate-100">
+            <h1 id="view-name" class="text-xl font-bold text-slate-800"></h1>
             <p id="view-title" class="text-blue-600 font-bold text-[10px] uppercase tracking-widest italic"></p>
-            <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-4 uppercase tracking-wider"></p>
+            <p id="view-company" class="text-slate-400 text-[10px] font-bold mb-4 uppercase"></p>
             
             <div class="mb-6 px-2">
-                <p id="view-bio" class="text-slate-500 text-xs leading-relaxed italic"></p>
+                <p id="view-bio" class="text-slate-500 text-xs italic"></p>
             </div>
 
-            <button id="save-btn-view" onclick="saveVCF()" class="w-full bg-[#1e293b] text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg hover:opacity-90 transition-all">
+            <button id="save-btn-view" onclick="saveVCF()" class="w-full text-white py-4 rounded-2xl font-bold text-sm mb-6 flex items-center justify-center gap-2 shadow-lg">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Save Contact
             </button>
 
@@ -94,7 +87,7 @@
     <div id="pin-modal" class="fixed inset-0 bg-slate-900/90 hidden items-center justify-center p-6 z-[100]">
         <div class="bg-white rounded-3xl p-8 max-w-xs w-full text-center shadow-2xl">
             <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Access</h3>
-            <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 mb-8 focus:outline-none" maxlength="4" placeholder="••••">
+            <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 mb-8 outline-none" maxlength="4" placeholder="••••">
             <div class="flex gap-3">
                 <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs uppercase">Cancel</button>
                 <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs uppercase shadow-lg">Login</button>
@@ -110,8 +103,8 @@
             </div>
             
             <div class="mb-8">
-                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-2">User Interface Design (1-10)</label>
-                <select id="inp-ui" onchange="applyUIPreview()" class="w-full p-4 bg-slate-50 rounded-xl border border-slate-200 outline-none font-semibold text-sm appearance-none">
+                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Design Interface (UI)</label>
+                <select id="inp-ui" class="w-full p-4 bg-slate-50 rounded-xl border border-slate-200 outline-none font-semibold text-sm">
                     <option value="ui-0">Default Setting</option>
                     <option value="ui-1">UI-1: Geometric Classic</option>
                     <option value="ui-2">UI-2: Modern Wave</option>
@@ -120,32 +113,42 @@
                     <option value="ui-5">UI-5: Dark Luxury</option>
                     <option value="ui-6">UI-6: Skewed Creative</option>
                     <option value="ui-7">UI-7: Rounded Corporate</option>
-                    <option value="ui-8">UI-8: Bold Dark Mode</option>
+                    <option value="ui-8">UI-8: Bold Sidebar</option>
                     <option value="ui-9">UI-9: Diagonal Split</option>
                     <option value="ui-10">UI-10: Premium Gold</option>
                 </select>
             </div>
 
-            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Choose Style Theme</p>
-            <div class="grid grid-cols-3 gap-2 mb-8 border-b pb-8">
+            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Style Theme</p>
+            <div class="grid grid-cols-3 gap-2 mb-8">
                 <div onclick="setTheme('theme-classic')" id="btn-theme-classic" class="p-4 bg-slate-50 border rounded-xl cursor-pointer text-xs font-semibold text-center">Classic</div>
                 <div onclick="setTheme('theme-border')" id="btn-theme-border" class="p-4 bg-slate-50 border rounded-xl cursor-pointer text-xs font-semibold text-center">Modern</div>
                 <div onclick="setTheme('theme-glass')" id="btn-theme-glass" class="p-4 bg-slate-50 border rounded-xl cursor-pointer text-xs font-semibold text-center">Glass</div>
             </div>
 
-            <div id="edit-form-fields" class="space-y-5 mb-8"></div>
+            <div class="grid grid-cols-2 gap-4 mb-8 bg-slate-50 p-4 rounded-2xl">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-1">PAGE BG</label>
+                    <input type="color" id="inp-bgcolor" class="w-full h-10 border-none bg-transparent">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-1">HEADER/BTN</label>
+                    <input type="color" id="inp-headercolor" class="w-full h-10 border-none bg-transparent">
+                </div>
+            </div>
+
+            <div id="edit-form-fields" class="space-y-5"></div>
             
-            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase shadow-xl">Update Cloud Data</button>
+            <button onclick="saveData()" id="save-btn" class="w-full mt-10 py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase shadow-xl hover:bg-slate-800 transition-all">Update Cloud Data</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTTq1XZykPeviwJBS9BhLDpF7WqhRG3ZmN5KICeLZB93vdIVIouRw70SJuvufEnREmug/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHsGGMXTX0rFGdCkr98f8aUNOs9NfWKP6PCdxLTQGh0KvO6oaPdn6q2AT7kswp7oC_/exec";
         const urlParams = new URLSearchParams(window.location.search);
         const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
         let userData = {};
         let currentTheme = "theme-classic";
-        let currentUI = "ui-0";
 
         async function init() {
             lucide.createIcons();
@@ -154,76 +157,52 @@
                 const result = await res.json();
                 if (result.success) { 
                     userData = result.data; 
-                    currentUI = userData.UI_Interface || "ui-0";
-                    currentTheme = userData.Theme || "theme-classic";
                     renderView(); 
-                    applyStoredSettings();
+                } else {
+                    document.getElementById('main-loader').innerText = "Card Not Found!";
                 }
-            } catch (e) { document.getElementById('main-loader').innerText = "Error Connecting!"; }
+            } catch (e) { document.getElementById('main-loader').innerText = "RHR Cloud Connection Error!"; }
         }
 
         function renderView() {
-            document.getElementById('view-photo').src = userData.Photo || '';
+            // Text Mapping
+            document.getElementById('view-photo').src = userData.Photo || 'https://via.placeholder.com/150';
             document.getElementById('view-name').innerText = userData.Name;
             document.getElementById('view-title').innerText = userData.Title;
             document.getElementById('view-company').innerText = userData.Company;
             document.getElementById('view-bio').innerText = userData.Bio || "";
             document.getElementById('view-address').innerText = userData.Address;
 
+            // Link Mapping
             document.getElementById('link-mobile').href = `tel:${userData.Mobile}`;
             document.getElementById('link-email').href = `mailto:${userData.Email}`;
-            
+            document.getElementById('link-website').href = userData.Website;
+            document.getElementById('link-facebook').href = userData.Facebook;
+            document.getElementById('link-linkedin').href = userData.LinkedIn;
+
+            // Colors
+            document.body.style.backgroundColor = userData.BG_Color || "#0100f0";
+            document.getElementById('header-bg').style.backgroundColor = userData.Header_Color || "#1e293b";
+            document.getElementById('save-btn-view').style.backgroundColor = userData.Header_Color || "#1e293b";
+
+            // UI & Theme Application
             const card = document.getElementById('card-container');
-            card.className = `max-w-sm w-full glass-card shadow-2xl overflow-hidden ${currentUI} ${currentTheme}`;
+            currentTheme = userData.Theme || "theme-classic";
+            const currentUI = userData.User_Interface || "ui-0";
+            
+            card.className = `max-w-sm w-full glass-card shadow-2xl overflow-hidden ${currentTheme} ${currentUI}`;
 
             document.getElementById('main-loader').classList.add('hidden');
             document.getElementById('card-container').classList.remove('hidden');
             lucide.createIcons();
         }
 
-        function applyUIPreview() {
-            currentUI = document.getElementById('inp-ui').value;
-            const card = document.getElementById('card-container');
-            // Remove old UI classes
-            for(let i=0; i<=10; i++) card.classList.remove(`ui-${i}`);
-            card.classList.add(currentUI);
-        }
-
-        function setTheme(theme) {
-            currentTheme = theme;
-            const card = document.getElementById('card-container');
-            card.classList.remove('theme-classic', 'theme-border', 'theme-glass');
-            card.classList.add(theme);
-        }
-
-        async function saveData() {
-            const btn = document.getElementById('save-btn');
-            btn.innerText = "Syncing..."; 
-            
-            const data = {
-                id: PROFILE_ID,
-                name: document.getElementById('inp-name').value,
-                title: document.getElementById('inp-title').value,
-                company: document.getElementById('inp-company').value,
-                bio: document.getElementById('inp-bio').value,
-                mobile: document.getElementById('inp-mobile').value,
-                email: document.getElementById('inp-email').value,
-                address: document.getElementById('inp-address').value,
-                photo: document.getElementById('inp-photo').value,
-                theme: currentTheme,
-                ui_interface: currentUI // Saving the selected UI
-            };
-
-            try {
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
-                location.reload();
-            } catch (e) { alert("Failed!"); }
-        }
-
         function setupEditForm() {
-            // Setting dropdown value to current
-            document.getElementById('inp-ui').value = currentUI;
-            
+            // Set Color inputs and UI dropdown values
+            document.getElementById('inp-bgcolor').value = userData.BG_Color || "#0100f0";
+            document.getElementById('inp-headercolor').value = userData.Header_Color || "#1e293b";
+            document.getElementById('inp-ui').value = userData.User_Interface || "ui-0";
+
             const fields = [
                 {id: 'name', label: 'Full Name', val: userData.Name},
                 {id: 'title', label: 'Title', val: userData.Title},
@@ -231,14 +210,54 @@
                 {id: 'bio', label: 'Bio', val: userData.Bio},
                 {id: 'mobile', label: 'Mobile', val: userData.Mobile},
                 {id: 'email', label: 'Email', val: userData.Email},
+                {id: 'website', label: 'Website', val: userData.Website},
+                {id: 'facebook', label: 'Facebook', val: userData.Facebook},
+                {id: 'linkedin', label: 'LinkedIn', val: userData.LinkedIn},
                 {id: 'address', label: 'Address', val: userData.Address},
-                {id: 'photo', label: 'Photo URL', val: userData.Photo}
+                {id: 'services', label: 'Services', val: userData.Services},
+                {id: 'photo', label: 'Photo URL', val: userData.Photo},
+                {id: 'pin', label: 'Admin PIN', val: userData.Admin_PIN}
             ];
             document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
                 <div>
-                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase">${f.label}</label>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
                     <input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border-none outline-none font-medium text-sm">
                 </div>`).join('');
+        }
+
+        async function saveData() {
+            const btn = document.getElementById('save-btn');
+            btn.innerText = "Syncing Cloud..."; btn.disabled = true;
+            
+            const data = {
+                id: PROFILE_ID,
+                pin: document.getElementById('inp-pin').value,
+                name: document.getElementById('inp-name').value,
+                title: document.getElementById('inp-title').value,
+                company: document.getElementById('inp-company').value,
+                bio: document.getElementById('inp-bio').value,
+                mobile: document.getElementById('inp-mobile').value,
+                email: document.getElementById('inp-email').value,
+                website: document.getElementById('inp-website').value,
+                facebook: document.getElementById('inp-facebook').value,
+                linkedin: document.getElementById('inp-linkedin').value,
+                address: document.getElementById('inp-address').value,
+                services: document.getElementById('inp-services').value,
+                photo: document.getElementById('inp-photo').value,
+                bgColor: document.getElementById('inp-bgcolor').value,
+                headerColor: document.getElementById('inp-headercolor').value,
+                theme: currentTheme,
+                userInterface: document.getElementById('inp-ui').value
+            };
+
+            try {
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+                const resText = await response.text();
+                if(resText === "Success") {
+                    alert("Card Updated Successfully!");
+                    location.reload();
+                }
+            } catch (e) { alert("Save failed!"); btn.disabled = false; btn.innerText = "Update Cloud Data"; }
         }
 
         function checkPin() {
@@ -247,10 +266,19 @@
                 closeModal('pin-modal');
                 openModal('edit-modal');
             } else { alert("Wrong PIN!"); }
+            document.getElementById('pin-input').value = "";
         }
 
+        function setTheme(t) { currentTheme = t; alert("Theme selected: " + t); }
+        function saveVCF() {
+            const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nTEL:${userData.Mobile}\nEMAIL:${userData.Email}\nEND:VCARD`;
+            const blob = new Blob([vcf], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `${userData.Name}.vcf`; a.click();
+        }
         function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
         window.onload = init;
     </script>
 </body>
