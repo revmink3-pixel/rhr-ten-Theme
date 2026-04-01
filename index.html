@@ -3,161 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Business Card | RHR Smart Way</title>
+    <title id="page-title">Digital Business Card | RHR</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        body { font-family: 'Poppins', sans-serif; transition: 0.5s; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Montserrat:wght@400;700&display=swap');
         
-        /* Core UI Classes based on your images */
-        .glass-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { transition: background 0.5s ease; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         
-        /* Themes */
-        .theme-classic { background: #ffffff; color: #1e293b; }
-        .theme-modern { background: #f8fafc; border: 2px solid #e2e8f0; }
-        .theme-glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.4); }
-
-        /* Dynamic UI Styles (UI-1 to UI-10) */
-        .ui-1 #header-shape { clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%); height: 160px; }
-        .ui-2 #header-shape { clip-path: ellipse(100% 100% at 50% 0%); height: 180px; }
-        .ui-3 .profile-img-container { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); border-radius: 0; }
-        .ui-4 .glass-card { border-left: 12px solid var(--header-color); border-radius: 8px !important; }
-        .ui-5 { background: #111 !important; color: white !important; }
-        .ui-6 #header-shape { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 45%); height: 190px; }
-        .ui-7 #header-shape { border-radius: 0 0 80px 80px; }
-        .ui-8 .social-btn { background: #1e293b; color: white; border-radius: 4px; }
-        .ui-9 #header-shape { clip-path: polygon(0 0, 100% 0, 0 100%); height: 210px; }
-        .ui-10 .glass-card { border: 3px solid #ffd700; box-shadow: 0 0 30px rgba(255,215,0,0.3); }
-
-        .profile-img-container { width: 120px; height: 120px; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-top: -60px; z-index: 20; position: relative; }
-        .btn-hover:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        /* Design 1 (Premium Dark) Specific Styles */
+        .premium-card { width: 100%; max-width: 400px; min-height: 90vh; color: white; border-radius: 40px; position: relative; padding: 50px 25px; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+        .profile-frame { width: 150px; height: 150px; border: 5px solid #f7a028; border-radius: 50%; margin-bottom: 20px; padding: 4px; background: #000; overflow: hidden; }
+        .profile-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .bottom-strips { position: absolute; bottom: 0; left: 0; width: 100%; height: 12px; display: flex; }
+        .strip { flex: 1; height: 100%; }
+        
+        /* Default Design Glass effect */
+        .glass-card { background: rgba(255, 255, 255, 0.95); border-radius: 2.5rem; width: 100%; max-width: 380px; overflow: hidden; }
+        
+        #render-area { display: flex; justify-content: center; width: 100%; }
+        .hidden { display: none !important; }
     </style>
 </head>
-<body id="page-bg" class="min-h-screen flex items-center justify-center p-4 bg-blue-700">
+<body id="body-bg" class="min-h-screen flex items-center justify-center p-4 bg-slate-900">
 
-    <div id="loader" class="text-white text-xl font-bold animate-pulse">Syncing with RHR Cloud...</div>
+    <button onclick="openModal('pin-modal')" class="fixed top-6 right-6 p-3 bg-white/10 backdrop-blur-md shadow-lg rounded-full z-50 text-white hover:bg-white/20 transition-all">
+        <i data-lucide="settings" class="w-5 h-5"></i>
+    </button>
 
-    <div id="card-wrap" class="max-w-sm w-full hidden">
-        <div id="card-body" class="glass-card rounded-[2.5rem] shadow-2xl overflow-hidden bg-white text-center">
-            <div id="header-shape" class="w-full bg-slate-800"></div>
-            
-            <div class="px-6 pb-10">
-                <div class="flex justify-center mb-4">
-                    <div class="profile-img-container rounded-full overflow-hidden bg-gray-200">
-                        <img id="view-photo" src="" alt="Profile" class="w-full h-full object-cover">
-                    </div>
-                </div>
+    <div id="main-loader" class="text-white font-medium animate-pulse italic">Connecting with RHR Cloud...</div>
+    
+    <div id="render-area" class="hidden"></div>
 
-                <h1 id="view-name" class="text-2xl font-extrabold text-slate-800"></h1>
-                <p id="view-title" class="text-xs font-bold uppercase tracking-widest mt-1 opacity-80"></p>
-                <p id="view-company" class="text-[10px] font-semibold text-slate-400 mb-4"></p>
-                
-                <p id="view-bio" class="text-xs text-slate-500 italic mb-6 px-4 leading-relaxed"></p>
-
-                <button id="main-btn" onclick="downloadVCF()" class="w-full py-4 rounded-2xl text-white font-bold text-sm shadow-lg btn-hover flex items-center justify-center gap-2 mb-6">
-                    <i data-lucide="user-plus" class="w-4 h-4"></i> SAVE CONTACT
-                </button>
-
-                <div class="flex justify-center gap-3 mb-4">
-                    <a id="call-link" href="#" class="p-4 bg-slate-50 rounded-2xl border border-slate-100 btn-hover text-slate-600"><i data-lucide="phone" class="w-5 h-5"></i></a>
-                    <a id="mail-link" href="#" class="p-4 bg-slate-50 rounded-2xl border border-slate-100 btn-hover text-slate-600"><i data-lucide="mail" class="w-5 h-5"></i></a>
-                    <a id="web-link" href="#" target="_blank" class="p-4 bg-slate-50 rounded-2xl border border-slate-100 btn-hover text-slate-600"><i data-lucide="globe" class="w-5 h-5"></i></a>
-                </div>
-
-                <div class="flex gap-2 mb-8">
-                    <a id="fb-link" href="#" target="_blank" class="flex-1 py-3 bg-slate-50 rounded-xl font-bold text-[10px] uppercase border border-slate-100 social-btn btn-hover">Facebook</a>
-                    <a id="li-link" href="#" target="_blank" class="flex-1 py-3 bg-slate-50 rounded-xl font-bold text-[10px] uppercase border border-slate-100 social-btn btn-hover">LinkedIn</a>
-                </div>
-
-                <div class="text-left space-y-3">
-                    <div class="flex items-start gap-3 p-4 bg-slate-50/50 rounded-2xl">
-                        <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 mt-1"></i>
-                        <div>
-                            <span class="text-[9px] font-bold text-slate-400 uppercase">Address</span>
-                            <p id="view-address" class="text-xs font-semibold text-slate-700"></p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-3 p-4 bg-slate-50/50 rounded-2xl">
-                        <i data-lucide="briefcase" class="w-4 h-4 text-slate-400 mt-1"></i>
-                        <div>
-                            <span class="text-[9px] font-bold text-slate-400 uppercase">Expertise</span>
-                            <p id="view-services" class="text-xs font-semibold text-slate-700"></p>
-                        </div>
-                    </div>
-                </div>
+    <div id="pin-modal" class="fixed inset-0 bg-slate-900/95 hidden items-center justify-center p-6 z-[100]">
+        <div class="bg-white rounded-3xl p-8 max-w-xs w-full text-center shadow-2xl">
+            <h3 class="text-xl font-bold mb-6 text-slate-800">Admin Access</h3>
+            <input type="password" id="pin-input" class="w-full text-center text-3xl font-bold border-b-2 mb-8 focus:outline-none" maxlength="4" placeholder="••••">
+            <div class="flex gap-3">
+                <button onclick="closeModal('pin-modal')" class="flex-1 py-3 text-slate-400 font-bold text-xs">CANCEL</button>
+                <button onclick="checkPin()" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs">LOGIN</button>
             </div>
         </div>
     </div>
 
-    <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzHsGGMXTX0rFGdCkr98f8aUNOs9NfWKP6PCdxLTQGh0KvO6oaPdn6q2AT7kswp7oC_/exec";
-        const urlParams = new URLSearchParams(window.location.search);
-        const USER_ID = urlParams.get('id') || "RHR-BIZ-01";
-        let user = {};
+    <div id="edit-modal" class="fixed inset-0 bg-white hidden overflow-y-auto p-6 z-[200]">
+        <div class="max-w-md mx-auto pb-20">
+            <div class="flex justify-between items-center mb-8 border-b pb-4">
+                <h2 class="text-xl font-bold text-slate-800">Card Control Panel</h2>
+                <button onclick="closeModal('edit-modal')" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <div class="mb-8 p-5 bg-blue-50 rounded-2xl border border-blue-100">
+                <label class="text-[11px] font-bold text-blue-600 uppercase tracking-widest mb-3 block">Choose UI Interface</label>
+                <select id="inp-ui" class="w-full p-4 rounded-xl border-2 border-blue-200 outline-none font-bold text-sm bg-white appearance-none">
+                    <option value="ui-0">Default (Glassy White)</option>
+                    <option value="ui-1">Design 1 (Premium Dark)</option>
+                    <option value="ui-2">Design 2</option>
+                    <option value="ui-3">Design 3</option>
+                </select>
+            </div>
 
-        async function loadCard() {
+            <div id="edit-form-fields" class="space-y-5 mb-8"></div>
+
+            <div class="grid grid-cols-2 gap-4 mb-10 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase">Header/Accent</label>
+                    <input type="color" id="inp-headercolor" class="w-full h-12 rounded-lg cursor-pointer">
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase">Background</label>
+                    <input type="color" id="inp-bgcolor" class="w-full h-12 rounded-lg cursor-pointer">
+                </div>
+            </div>
+
+            <button onclick="saveData()" id="save-btn" class="w-full py-5 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-widest shadow-xl hover:bg-black transition-all">Update Cloud Data</button>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybQJ34uTIoKI44vpV7jAEnUMEkDrjQneIQ-cqHMIoPa5ZmjykLvRWD0hmhMt_lKCZ_/exec";
+        const urlParams = new URLSearchParams(window.location.search);
+        const PROFILE_ID = urlParams.get('id') || "RHR-BIZ-01";
+        let userData = {};
+
+        async function init() {
             try {
-                const response = await fetch(`${SCRIPT_URL}?id=${USER_ID}`);
-                const res = await response.json();
-                if (res.success) {
-                    user = res.data;
-                    renderUI();
+                const res = await fetch(`${SCRIPT_URL}?id=${PROFILE_ID}`);
+                const result = await res.json();
+                if (result.success) { 
+                    userData = result.data; 
+                    renderView(); 
                 } else {
-                    document.getElementById('loader').innerText = "Card Not Found!";
+                    document.getElementById('main-loader').innerText = "Card Not Found (404)";
                 }
-            } catch (err) {
-                document.getElementById('loader').innerText = "Connection Failed!";
-            }
+            } catch (e) { document.getElementById('main-loader').innerText = "Connection Failed!"; }
         }
 
-        function renderUI() {
-            // Text Content
-            document.getElementById('view-name').innerText = user.Name;
-            document.getElementById('view-title').innerText = user.Title;
-            document.getElementById('view-company').innerText = user.Company;
-            document.getElementById('view-bio').innerText = user.Bio;
-            document.getElementById('view-address').innerText = user.Address;
-            document.getElementById('view-services').innerText = user.Services;
-            document.getElementById('view-photo').src = user.Photo;
+        function renderView() {
+            const area = document.getElementById('render-area');
+            const ui = userData.User_Interface || "ui-0";
+            
+            document.body.style.backgroundColor = userData.BG_Color || "#0100f0";
 
-            // Links
-            document.getElementById('call-link').href = `tel:${user.Mobile}`;
-            document.getElementById('mail-link').href = `mailto:${user.Email}`;
-            document.getElementById('web-link').href = user.Website;
-            document.getElementById('fb-link').href = user.Facebook;
-            document.getElementById('li-link').href = user.LinkedIn;
+            if (ui === "ui-1") {
+                // UI 1: Premium Dark Template
+                area.innerHTML = `
+                <div class="premium-card shadow-2xl" style="background: ${userData.BG_Color || '#1a1a1a'}">
+                    <div class="profile-frame" style="border-color: ${userData.Header_Color || '#f7a028'}">
+                        <img src="${userData.Photo || ''}" alt="Profile">
+                    </div>
+                    <h1 class="text-2xl font-bold mb-1">${userData.Name || ''}</h1>
+                    <p class="text-[10px] font-bold tracking-[4px] uppercase mb-1" style="color: ${userData.Header_Color || '#f7a028'}">${userData.Title || ''}</p>
+                    <p class="text-gray-500 text-[9px] font-bold uppercase mb-6 tracking-widest">${userData.Company || ''}</p>
+                    <button onclick="saveVCF()" class="w-full py-4 rounded-2xl font-bold text-sm mb-6 uppercase tracking-widest" style="background: ${userData.Header_Color || '#f7a028'}; color: #000">Save Contact</button>
+                    <div class="flex gap-4 mb-8">
+                         <a href="tel:${userData.Mobile}" class="p-4 bg-white/5 border border-white/10 rounded-2xl text-white"><i data-lucide="phone"></i></a>
+                         <a href="mailto:${userData.Email}" class="p-4 bg-white/5 border border-white/10 rounded-2xl text-white"><i data-lucide="mail"></i></a>
+                         <a href="${userData.Website}" target="_blank" class="p-4 bg-white/5 border border-white/10 rounded-2xl text-white"><i data-lucide="globe"></i></a>
+                    </div>
+                    <div class="bottom-strips">
+                        <div class="strip" style="background: #fdbb3d;"></div><div class="strip" style="background: #e88730;"></div>
+                        <div class="strip" style="background: #ffb83d;"></div><div class="strip" style="background: #f2862a;"></div>
+                    </div>
+                </div>`;
+            } else {
+                // Default UI 0: Glassy Modern Template
+                area.innerHTML = `
+                <div class="glass-card shadow-2xl">
+                    <div class="h-28" style="background: ${userData.Header_Color || '#1e293b'}"></div> 
+                    <div class="px-6 pb-8 -mt-14 text-center">
+                        <img src="${userData.Photo || ''}" class="w-28 h-28 rounded-full mx-auto mb-4 border-4 border-white shadow-lg object-cover bg-slate-50">
+                        <h1 class="text-2xl font-bold text-slate-800">${userData.Name || ''}</h1>
+                        <p class="text-blue-600 font-bold text-[11px] uppercase tracking-[3px] mb-1">${userData.Title || ''}</p>
+                        <p class="text-slate-400 text-[10px] font-bold mb-6 uppercase tracking-wider">${userData.Company || ''}</p>
+                        <button onclick="saveVCF()" class="w-full text-white py-4 rounded-2xl font-bold text-sm mb-8 shadow-lg hover:opacity-90" style="background: ${userData.Header_Color || '#1e293b'}">Save to Contacts</button>
+                        <div class="flex justify-center gap-4">
+                            <a href="tel:${userData.Mobile}" class="p-4 bg-slate-100 rounded-2xl text-slate-600 hover:bg-blue-50 hover:text-blue-600"><i data-lucide="phone"></i></a>
+                            <a href="mailto:${userData.Email}" class="p-4 bg-slate-100 rounded-2xl text-slate-600 hover:bg-blue-50 hover:text-blue-600"><i data-lucide="mail"></i></a>
+                            <a href="${userData.Website}" target="_blank" class="p-4 bg-slate-100 rounded-2xl text-slate-600 hover:bg-blue-50 hover:text-blue-600"><i data-lucide="globe"></i></a>
+                        </div>
+                    </div>
+                </div>`;
+            }
 
-            // Styling & Themes
-            const body = document.getElementById('page-bg');
-            const card = document.getElementById('card-body');
-            const header = document.getElementById('header-shape');
-            const btn = document.getElementById('main-btn');
-
-            body.style.backgroundColor = user.BG_Color;
-            header.style.backgroundColor = user.Header_Color;
-            btn.style.backgroundColor = user.Header_Color;
-            document.documentElement.style.setProperty('--header-color', user.Header_Color);
-
-            // Apply Interface & Theme Classes (e.g., ui-1 theme-glass)
-            card.className = `glass-card rounded-[2.5rem] shadow-2xl overflow-hidden text-center ${user.Theme} ${user.User_Interface}`;
-
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('card-wrap').classList.remove('hidden');
+            document.getElementById('main-loader').classList.add('hidden');
+            area.classList.remove('hidden');
             lucide.createIcons();
         }
 
-        function downloadVCF() {
-            const vcfData = `BEGIN:VCARD\nVERSION:3.0\nFN:${user.Name}\nORG:${user.Company}\nTITLE:${user.Title}\nTEL:${user.Mobile}\nEMAIL:${user.Email}\nURL:${user.Website}\nEND:VCARD`;
-            const blob = new Blob([vcfData], { type: 'text/vcard' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${user.Name}.vcf`;
+        function checkPin() {
+            const input = document.getElementById('pin-input').value;
+            if(input === (userData.Admin_PIN || "1111")) {
+                setupEditForm();
+                closeModal('pin-modal');
+                openModal('edit-modal');
+            } else { alert("Wrong Access PIN!"); }
+            document.getElementById('pin-input').value = "";
+        }
+
+        function setupEditForm() {
+            document.getElementById('inp-ui').value = userData.User_Interface || "ui-0";
+            document.getElementById('inp-bgcolor').value = userData.BG_Color || "#0100f0";
+            document.getElementById('inp-headercolor').value = userData.Header_Color || "#1e293b";
+
+            const fields = [
+                {id: 'name', label: 'Full Name', val: userData.Name},
+                {id: 'title', label: 'Professional Title', val: userData.Title},
+                {id: 'company', label: 'Company/Organization', val: userData.Company},
+                {id: 'mobile', label: 'Mobile Number', val: userData.Mobile},
+                {id: 'email', label: 'Email Address', val: userData.Email},
+                {id: 'website', label: 'Website URL', val: userData.Website},
+                {id: 'photo', label: 'Profile Photo URL', val: userData.Photo},
+                {id: 'pin', label: 'Change Admin PIN', val: userData.Admin_PIN}
+            ];
+            document.getElementById('edit-form-fields').innerHTML = fields.map(f => `
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-widest">${f.label}</label>
+                    <input id="inp-${f.id}" value="${f.val || ''}" class="w-full p-4 bg-slate-50 rounded-xl border border-slate-100 outline-none font-medium text-sm focus:border-blue-300">
+                </div>`).join('');
+        }
+
+        async function saveData() {
+            const btn = document.getElementById('save-btn');
+            btn.innerText = "Syncing with RHR Cloud..."; btn.disabled = true;
+            
+            const data = {
+                id: PROFILE_ID,
+                userInterface: document.getElementById('inp-ui').value,
+                pin: document.getElementById('inp-pin').value,
+                name: document.getElementById('inp-name').value,
+                title: document.getElementById('inp-title').value,
+                company: document.getElementById('inp-company').value,
+                mobile: document.getElementById('inp-mobile').value,
+                email: document.getElementById('inp-email').value,
+                website: document.getElementById('inp-website').value,
+                photo: document.getElementById('inp-photo').value,
+                bgColor: document.getElementById('inp-bgcolor').value,
+                headerColor: document.getElementById('inp-headercolor').value,
+                theme: userData.Theme || "classic"
+            };
+
+            try {
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(data) });
+                const result = await res.text();
+                if (result === "Success") {
+                    alert("Data & Design Updated Successfully!");
+                    location.reload();
+                } else { throw new Error(); }
+            } catch (e) { 
+                alert("Update failed! Check script permissions."); 
+                btn.disabled = false; 
+                btn.innerText = "Update Cloud Data"; 
+            }
+        }
+
+        function saveVCF() {
+            const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${userData.Name}\nORG:${userData.Company}\nTITLE:${userData.Title}\nTEL:${userData.Mobile}\nEMAIL:${userData.Email}\nURL:${userData.Website}\nEND:VCARD`;
+            const blob = new Blob([vcf], { type: 'text/vcard' });
+            const a = document.createElement('a'); 
+            a.href = window.URL.createObjectURL(blob); 
+            a.download = `${userData.Name}.vcf`; 
             a.click();
         }
 
-        window.onload = loadCard;
+        function openModal(id) { document.getElementById(id).style.display = (id === 'edit-modal' ? 'block' : 'flex'); }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onload = init;
     </script>
 </body>
 </html>
